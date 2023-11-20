@@ -1,6 +1,7 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { Answer } from "../../components/Answer";
 import { MusicSheet, type Note } from "../../components/TabSheet";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 const keys = ["c", "d", "e", "f", "g", "a", "b"] as const;
 
@@ -31,8 +32,11 @@ export const NotesPractice = component$(() => {
 
   const answers = useSignal<string[]>(createRandomAnswer(notes.value[0]));
 
+  const [bestScore, setBestScore] = useLocalStorage("bestScore", 0);
+  const score = useSignal(0);
+
   return (
-    <div class="flex flex-col">
+    <div class="flex flex-col content-center gap-6">
       <MusicSheet
         notes={notes}
         className="[&_#vf-right-answer_path]:animate-[right-answer_500ms_ease-in-out]  [&_#vf-wrong-answer_path]:animate-[wrong-answer_500ms_ease-in-out]"
@@ -64,12 +68,21 @@ export const NotesPractice = component$(() => {
                 if (answer === notes.value[0].key) {
                   notes.value = [...notes.value.slice(1), createRandomNote()];
                   questionNumber.value += 1;
+                  score.value += 1;
+                  if (score.value > bestScore.value) {
+                    setBestScore(score.value);
+                  }
                   answers.value = createRandomAnswer(notes.value[0]);
+                } else {
+                  score.value = 0;
                 }
               }}
             />
           );
         })}
+      </div>
+      <div class="text-center text-4xl">
+        Best score: {bestScore.value} / score: {score.value}
       </div>
     </div>
   );
