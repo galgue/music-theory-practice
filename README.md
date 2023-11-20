@@ -1,4 +1,4 @@
-# The 8th note
+# 8notes
 
 app that help learning music theory with practice
 
