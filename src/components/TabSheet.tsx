@@ -3,6 +3,7 @@ import {
   useSignal,
   useVisibleTask$,
   type Signal,
+  useComputed$,
 } from "@builder.io/qwik";
 
 import { Formatter, Renderer, Stave, StaveNote, StemmableNote } from "vexflow";
@@ -13,6 +14,7 @@ export type Note = {
   key: Key | "r" | Key[];
   duration: "q" | "h" | "w" | "8";
   octave_shift?: number;
+  id?: string;
 };
 
 export const MusicSheet = component$<{
@@ -47,16 +49,15 @@ export const MusicSheet = component$<{
 
     const notesMeasure: StemmableNote[] = notes.value
       .slice(0, isSmall() ? 4 : 8)
-      .map(
-        (note) =>
-          new StaveNote({
-            keys:
-              note.key instanceof Array
-                ? note.key.map((key) => `${key}/4`)
-                : [`${note.key}/4`],
-            duration: note.duration,
-            octave_shift: note.octave_shift,
-          })
+      .map((note) =>
+        new StaveNote({
+          keys:
+            note.key instanceof Array
+              ? note.key.map((key) => `${key}/4`)
+              : [`${note.key}/4`],
+          duration: note.duration,
+          octave_shift: note.octave_shift,
+        }).setAttribute("id", note.id)
       );
 
     // Helper function to justify and draw a 4/4 voice
@@ -69,7 +70,7 @@ export const MusicSheet = component$<{
     <div
       id="output"
       ref={outputRef}
-      class="[&>svg]:w-full [&>svg]:h-full dark:[&_*]:fill-white dark:[&_*]:stroke-white dark:[&_.vf-stem>path:nth-child(0)]:stroke-red-600 dark:[&_.vf-notehead>path:nth-child(0)]:fill-red-600"
+      class={`[&>svg]:w-full [&>svg]:h-full dark:[&_*]:fill-white dark:[&_*]:stroke-white`}
     />
   );
 });

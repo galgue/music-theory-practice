@@ -42,7 +42,22 @@ export const NotesPractice = component$(() => {
               isRight={answer === notes.value[0].key}
               answer={answer}
               onClick$={async (transitionEndPromise) => {
+                const isRight = answer === notes.value[0].key;
+                notes.value = [
+                  {
+                    ...notes.value[0],
+                    id: isRight ? "right-answer" : "wrong-answer",
+                  },
+                  ...notes.value.slice(1),
+                ];
                 await transitionEndPromise;
+                notes.value = [
+                  {
+                    ...notes.value[0],
+                    id: undefined,
+                  },
+                  ...notes.value.slice(1),
+                ];
                 if (answer === notes.value[0].key) {
                   notes.value = [...notes.value.slice(1), createRandomNote()];
                   questionNumber.value += 1;

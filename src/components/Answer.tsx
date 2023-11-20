@@ -22,7 +22,7 @@ export const Answer = component$<{
         const transitionEndPromise = new Promise<void>((resolve) => {
           setTimeout(() => {
             resolve();
-          }, 400);
+          }, 500);
         });
 
         onClick$(transitionEndPromise);
