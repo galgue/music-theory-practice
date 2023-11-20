@@ -33,7 +33,10 @@ export const NotesPractice = component$(() => {
 
   return (
     <div class="flex flex-col">
-      <MusicSheet notes={notes} />
+      <MusicSheet
+        notes={notes}
+        className="[&_#vf-right-answer_path]:animate-[right-answer_500ms_ease-in-out]  [&_#vf-wrong-answer_path]:animate-[wrong-answer_500ms_ease-in-out]"
+      />
       <div class="grid grid-cols-2 grid-row-2 gap-4 aspect-square lg:aspect-auto mr-4 ml-4 flex-1">
         {answers.value.map((answer, index) => {
           return (

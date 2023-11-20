@@ -3,7 +3,6 @@ import {
   useSignal,
   useVisibleTask$,
   type Signal,
-  useComputed$,
 } from "@builder.io/qwik";
 
 import { Formatter, Renderer, Stave, StaveNote, StemmableNote } from "vexflow";
@@ -19,7 +18,8 @@ export type Note = {
 
 export const MusicSheet = component$<{
   notes: Signal<Note[]>;
-}>(({ notes }) => {
+  className?: string;
+}>(({ notes, className }) => {
   const outputRef = useSignal<HTMLDivElement>();
 
   useVisibleTask$(({ track }) => {
@@ -70,7 +70,7 @@ export const MusicSheet = component$<{
     <div
       id="output"
       ref={outputRef}
-      class={`[&>svg]:w-full [&>svg]:h-full dark:[&_*]:fill-white dark:[&_*]:stroke-white`}
+      class={`[&>svg]:w-full [&>svg]:h-full dark:[&_*]:fill-white dark:[&_*]:stroke-white ${className}`}
     />
   );
 });
